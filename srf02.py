@@ -2,6 +2,9 @@
 Created on Oct 2, 2010
 
 @author: michael
+
+http://www.robot-electronics.co.uk/htm/usb_i2c_tech.htm
+http://www.robot-electronics.co.uk/htm/srf02techI2C.htm
 '''
 
 import serial
