@@ -9,6 +9,7 @@ http://www.robot-electronics.co.uk/htm/srf02techI2C.htm
 
 import serial
 import time
+import logging
 
 
 #set up the serial connection
@@ -20,6 +21,8 @@ ser = serial.Serial(
     bytesize=serial.EIGHTBITS,
     timeout=1
 )
+#logging.basicConfig(filename='srf02.log', level=logging.INFO, format='[%(asctime)s][%(funcName)s][%(lineno)d][%(levelname)s] %(message)s')
+logging.basicConfig(filename='srf02.log', level=logging.INFO, format='[%(asctime)s] %(message)s')
 
 def print_response(resp):
     resp_txt = ""
@@ -27,7 +30,8 @@ def print_response(resp):
         resp_txt += "{:02x} ".format(ord(byte))
     print "response: " + resp_txt
 
-while True:
+#while True:
+for i in range(0, 100):
     #basic error handling, occasionally the device fails to respond. This keeps the 
     #loop running.
     try:
@@ -71,11 +75,14 @@ while True:
         '''
         print_response(s)
         if ord(s[0]) == 1:
-            print "Status OK. high: %s, low: %s, range in cm: %s" % (ord(s[1]), ord(s[2]), ord(s[1]) * 256 + ord(s[2]))
+            range_in_cm = ord(s[1]) * 256 + ord(s[2])
+            logging.info('range in cm: %s' % range_in_cm)
+            print "Status OK. high: %s, low: %s, range in cm: %s" % (ord(s[1]), ord(s[2]), range_in_cm)
         else:
             print 'Status ERR. Error reading device'
         
         #slow the loop down a bit to give our eyes a chance to read the response
+        #raw_input("Press key to continue...")
         time.sleep(1)
 
         '''
